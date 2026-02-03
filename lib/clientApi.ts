@@ -21,6 +21,15 @@ export const login = async (data: LoginRequest) => {
   return res.data;
 };
 
+type CheckSessionRequest = {
+  success: boolean;
+};
+
+export const checkSession = async () => {
+  const res = await nextServer.get<CheckSessionRequest>('/auth/session');
+  return res.data.success;
+};
+
 // fetchNotes
 // fetchNoteById
 // createNote
@@ -28,6 +37,6 @@ export const login = async (data: LoginRequest) => {
 // register+++
 // login+++
 // logout
-// checkSession
+// checkSession+++
 // getMe
 // updateMe
