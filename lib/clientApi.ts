@@ -11,12 +11,22 @@ export const register = async (data: RegisterRequest) => {
   return res.data;
 };
 
+export type LoginRequest = {
+  email: string;
+  password: string;
+};
+
+export const login = async (data: LoginRequest) => {
+  const res = await nextServer.post<User>('/auth/login', data);
+  return res.data;
+};
+
 // fetchNotes
 // fetchNoteById
 // createNote
 // deleteNote
 // register+++
-// login
+// login+++
 // logout
 // checkSession
 // getMe
