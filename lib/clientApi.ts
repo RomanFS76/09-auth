@@ -30,6 +30,11 @@ export const checkSession = async () => {
   return res.data.success;
 };
 
+export const getMe = async () => {
+  const { data } = await nextServer.get<User>('/auth/me');
+  return data;
+};
+
 // fetchNotes
 // fetchNoteById
 // createNote
@@ -38,5 +43,5 @@ export const checkSession = async () => {
 // login+++
 // logout
 // checkSession+++
-// getMe
+// getMe+++
 // updateMe
