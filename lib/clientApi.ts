@@ -1,5 +1,6 @@
 import { User } from '@/types/user';
 import { nextServer } from './api';
+import type { Note } from '../types/note';
 
 export type RegisterRequest = {
   email: string;
@@ -39,10 +40,46 @@ export const logout = async (): Promise<void> => {
   await nextServer.post('/auth/logout')
 };
 
-// fetchNotes
+interface createNoteParams {
+  title: string;
+  content: string;
+  tag: 'Todo' | 'Work' | 'Personal' | 'Meeting' | 'Shopping';
+}
+
+export const createNote = async (note: createNoteParams): Promise<Note> => {
+  const { data } = await nextServer.post<Note>(`/notes`, note);
+  return data;
+};
+
+export const deleteNote = async (id: string): Promise<Note> => {
+  const { data } = await nextServer.delete<Note>(`/notes/${id}`);
+  return data;
+};
+
+
+interface FetchNotesResponse {
+  notes: Note[];  
+  totalPages: number;
+}
+
+export const fetchNotes = async (page:number, search: string, tag?:string): Promise<FetchNotesResponse> => {
+  const { data } = await nextServer.get<FetchNotesResponse>('/notes', {
+    params: { page, perPage: 12, search, tag },
+  });
+  return data;
+};
+
+export const fetchNoteById = async (id: string): Promise<Note> => {
+  const { data } = await nextServer.get<Note>(`/notes/${id}`);
+  return data;
+};
+
+
+
+// fetchNotes+++
 // fetchNoteById
-// createNote
-// deleteNote
+// createNote+++
+// deleteNote+++
 // register+++
 // login+++
 // logout+++

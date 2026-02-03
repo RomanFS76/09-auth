@@ -8,8 +8,9 @@ import css from './page.module.css';
 import NoteList from '@/components/NoteList/NoteList';
 import { useState } from 'react';
 import { useDebounce } from 'use-debounce';
-import { fetchNotes } from '@/lib/api';
+
 import Link from 'next/link';
+import { fetchNotes } from '@/lib/clientApi';
 
 type NotesClientProps = {
   tag?: string;
