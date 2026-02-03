@@ -1,8 +1,19 @@
+'use client';
 import Image from 'next/image';
 import css from './ProfilePage.module.css';
 import Link from 'next/link';
+import { useAuthStore } from '@/lib/store/authStore';
 
 const ProfilePage = () => {
+const avatar = useAuthStore((state) => state.user?.avatar);
+const username = useAuthStore((state) => state.user?.username);
+const email = useAuthStore((state) => state.user?.email);
+
+
+console.log(avatar);
+console.log(username);
+console.log(email);
+
   return (
     <>
       <main className={css.mainContent}>
@@ -15,7 +26,7 @@ const ProfilePage = () => {
           </div>
           <div className={css.avatarWrapper}>
             <Image
-              src="/"
+              src={avatar || '/default-avatar.png'}
               alt="User Avatar"
               width={120}
               height={120}
@@ -23,8 +34,8 @@ const ProfilePage = () => {
             />
           </div>
           <div className={css.profileInfo}>
-            <p>Username: your_username</p>
-            <p>Email: your_email@example.com</p>
+            <p>Username: {username}</p>
+            <p>Email: {email}</p>
           </div>
         </div>
       </main>

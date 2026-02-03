@@ -4,7 +4,7 @@ import { api } from '../../api';
 
 export async function POST() {
   const cookieStore = await cookies();
-  await api.post('auth/logout', {
+  await api.post('/auth/logout',null, {
     headers: {
       Cookie: cookieStore.toString(),
     },

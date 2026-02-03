@@ -31,8 +31,12 @@ export const checkSession = async () => {
 };
 
 export const getMe = async () => {
-  const { data } = await nextServer.get<User>('/auth/me');
+  const { data } = await nextServer.get<User>('/users/me');
   return data;
+};
+
+export const logout = async (): Promise<void> => {
+  await nextServer.post('/auth/logout')
 };
 
 // fetchNotes
@@ -41,7 +45,7 @@ export const getMe = async () => {
 // deleteNote
 // register+++
 // login+++
-// logout
+// logout+++
 // checkSession+++
 // getMe+++
 // updateMe
