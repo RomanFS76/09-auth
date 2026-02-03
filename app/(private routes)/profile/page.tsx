@@ -10,9 +10,8 @@ const username = useAuthStore((state) => state.user?.username);
 const email = useAuthStore((state) => state.user?.email);
 
 
+
 console.log(avatar);
-console.log(username);
-console.log(email);
 
   return (
     <>
@@ -25,14 +24,18 @@ console.log(email);
             </Link>
           </div>
           <div className={css.avatarWrapper}>
+          {avatar ? (
             <Image
-              src={avatar || '/default-avatar.png'}
+              src={avatar}
               alt="User Avatar"
               width={120}
               height={120}
               className={css.avatar}
             />
-          </div>
+          ) : (
+            <div className={css.avatarPlaceholder} aria-label="No avatar" />
+          )}
+        </div>
           <div className={css.profileInfo}>
             <p>Username: {username}</p>
             <p>Email: {email}</p>
