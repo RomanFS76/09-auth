@@ -5,15 +5,20 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { login, LoginRequest } from '@/lib/clientApi';
 import { ApiError } from '@/app/api/api';
+import { useAuthStore } from '@/lib/store/authStore';
 
 const SignInPage = () => {
   const router = useRouter();
   const [error, setError] = useState('');
+
+  const {setUser} = useAuthStore();
+
   const handleSubmit = async (formData: FormData) => {
     try {
       const formValues = Object.fromEntries(formData) as LoginRequest;
       const res = await login(formValues);
       if (res) {
+        setUser(res);
         router.push('/profile');
       } else {
         setError('Invalid email or password');
@@ -60,7 +65,6 @@ const SignInPage = () => {
               Log in
             </button>
           </div>
-
           <p className={css.error}>{error}</p>
         </form>
       </main>
