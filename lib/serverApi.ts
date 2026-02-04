@@ -11,9 +11,6 @@ const getAuthHeaders = async () => {
 
 export const fetchNotes = async (page: number, search: string, tag?: string) => {
   const headers = await getAuthHeaders();
-
-
-
   const res = await nextServer.get('/notes', { 
     headers, 
     params: { page, perPage: 12, search, tag },
@@ -38,3 +35,4 @@ export const checkSession = async () => {
   const res = await nextServer.get('/auth/session', { headers });
   return res.data;
 };
+

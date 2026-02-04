@@ -37,7 +37,7 @@ export const getMe = async () => {
 };
 
 export const logout = async (): Promise<void> => {
-  await nextServer.post('/auth/logout')
+  await nextServer.post('/auth/logout');
 };
 
 interface createNoteParams {
@@ -56,13 +56,16 @@ export const deleteNote = async (id: string): Promise<Note> => {
   return data;
 };
 
-
 interface FetchNotesResponse {
-  notes: Note[];  
+  notes: Note[];
   totalPages: number;
 }
 
-export const fetchNotes = async (page:number, search: string, tag?:string): Promise<FetchNotesResponse> => {
+export const fetchNotes = async (
+  page: number,
+  search: string,
+  tag?: string
+): Promise<FetchNotesResponse> => {
   const { data } = await nextServer.get<FetchNotesResponse>('/notes', {
     params: { page, perPage: 12, search, tag },
   });
@@ -73,8 +76,6 @@ export const fetchNoteById = async (id: string): Promise<Note> => {
   const { data } = await nextServer.get<Note>(`/notes/${id}`);
   return data;
 };
-
-
 
 // fetchNotes+++
 // fetchNoteById

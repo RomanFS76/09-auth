@@ -1,17 +1,39 @@
-'use client';
 import Image from 'next/image';
 import css from './ProfilePage.module.css';
 import Link from 'next/link';
-import { useAuthStore } from '@/lib/store/authStore';
+import { getMe } from '@/lib/serverApi';
+import type { Metadata } from 'next';
 
-const ProfilePage = () => {
-const avatar = useAuthStore((state) => state.user?.avatar);
-const username = useAuthStore((state) => state.user?.username);
-const email = useAuthStore((state) => state.user?.email);
+export async function generateMetadata(): Promise<Metadata> {
+  const user = await getMe();
 
+  return {
+    title: `${user.username} | Profile`,
+    description: `Profile page of ${user.username}.`,
+    robots: {
+      index: false,
+      follow: false,
+    },
+    openGraph: {
+      title: `${user.username} | Profile`,
+      description: `View and manage ${user.username}'s profile.`,
+      url: 'https://notehub.com/profile',
+      siteName: 'NoteHub',
+      images: [
+        {
+          url: user.avatar,
+          width: 1200,
+          height: 630,
+          alt: `${user.username} avatar`,
+        },
+      ],
+      type: 'profile',
+    },
+  };
+}
 
-
-console.log(avatar);
+const ProfilePage = async () => {
+  const user = await getMe();
 
   return (
     <>
@@ -24,21 +46,21 @@ console.log(avatar);
             </Link>
           </div>
           <div className={css.avatarWrapper}>
-          {avatar ? (
-            <Image
-              src={avatar}
-              alt="User Avatar"
-              width={120}
-              height={120}
-              className={css.avatar}
-            />
-          ) : (
-            <div className={css.avatarPlaceholder} aria-label="No avatar" />
-          )}
-        </div>
+            {user.avatar ? (
+              <Image
+                src={user.avatar}
+                alt="User Avatar"
+                width={120}
+                height={120}
+                className={css.avatar}
+              />
+            ) : (
+              <div className={css.avatarPlaceholder} aria-label="No avatar" />
+            )}
+          </div>
           <div className={css.profileInfo}>
-            <p>Username: {username}</p>
-            <p>Email: {email}</p>
+            <p>Username: {user.username}</p>
+            <p>Email: {user.email}</p>
           </div>
         </div>
       </main>
