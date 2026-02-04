@@ -8,23 +8,23 @@ export async function generateMetadata(): Promise<Metadata> {
   const user = await getMe();
 
   return {
-    title: `${user.username} | Profile`,
-    description: `Profile page of ${user.username}.`,
+    title: `${user?.data?.username} | Profile`,
+    description: `Profile page of ${user?.data?.username}.`,
     robots: {
       index: false,
       follow: false,
     },
     openGraph: {
-      title: `${user.username} | Profile`,
-      description: `View and manage ${user.username}'s profile.`,
+      title: `${user?.data?.username} | Profile`,
+      description: `View and manage ${user?.data?.username}'s profile.`,
       url: 'https://notehub.com/profile',
       siteName: 'NoteHub',
       images: [
         {
-          url: user.avatar,
+          url: user?.data?.avatar,
           width: 1200,
           height: 630,
-          alt: `${user.username} avatar`,
+          alt: `${user?.data?.username} avatar`,
         },
       ],
       type: 'profile',
@@ -46,9 +46,9 @@ const ProfilePage = async () => {
             </Link>
           </div>
           <div className={css.avatarWrapper}>
-            {user.avatar ? (
+            {user?.data?.avatar ? (
               <Image
-                src={user.avatar}
+                src={user?.data?.avatar}
                 alt="User Avatar"
                 width={120}
                 height={120}
@@ -59,8 +59,8 @@ const ProfilePage = async () => {
             )}
           </div>
           <div className={css.profileInfo}>
-            <p>Username: {user.username}</p>
-            <p>Email: {user.email}</p>
+            <p>Username: {user?.data?.username}</p>
+            <p>Email: {user?.data?.email}</p>
           </div>
         </div>
       </main>
