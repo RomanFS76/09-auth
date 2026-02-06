@@ -77,6 +77,16 @@ export const fetchNoteById = async (id: string): Promise<Note> => {
   return data;
 };
 
+export type UpdateUserRequest = {
+  email: string;
+  username: string;
+};
+
+export const updateMe = async (payload: UpdateUserRequest) => {
+  const { data } = await nextServer.patch<User>('/users/me', payload);
+  return { data };
+};
+
 // fetchNotes+++
 // fetchNoteById
 // createNote+++
@@ -86,4 +96,4 @@ export const fetchNoteById = async (id: string): Promise<Note> => {
 // logout+++
 // checkSession+++
 // getMe+++
-// updateMe
+// updateMe+++

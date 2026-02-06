@@ -34,6 +34,7 @@ export async function generateMetadata(): Promise<Metadata> {
 
 const ProfilePage = async () => {
   const user = await getMe();
+  console.log(user);
 
   return (
     <>
