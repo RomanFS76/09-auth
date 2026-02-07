@@ -2,31 +2,21 @@
 import Image from 'next/image';
 import css from './EditProfilePage.module.css';
 import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
-import { updateMe,getMe } from '@/lib/clientApi';
+import { updateMe } from '@/lib/clientApi';
 import { useAuthStore } from '@/lib/store/authStore';
 
 const ProfileEditPage = () => {
   const router = useRouter();
-  const [userName, setUserName] = useState('');
-
-  useEffect(() => {
-    getMe().then((user) => {
-      setUserName(user.username ?? '');
-      
-    });
-  }, []);
 
   const email = useAuthStore(state => state.user?.email || '');
   const user = useAuthStore(state => state.user);
+  const {setUser} = useAuthStore();
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setUserName(event.target.value);
-  };
+  const updateProfile = async (formData: FormData) => {
+    const username = formData.get('username') as string;   
 
-  const updateProfile = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    await updateMe({ username: userName, email });
+    const res = await updateMe({ username, email });
+    setUser(res.data);
     router.push('/profile');
   };
 
@@ -44,7 +34,7 @@ const ProfileEditPage = () => {
               className={css.avatar}
             />
           )}
-          <form className={css.profileInfo} onSubmit={updateProfile}>
+          <form className={css.profileInfo} action={updateProfile}>
             <div className={css.usernameWrapper}>
               <label htmlFor="username">Username:</label>
               <input
@@ -52,8 +42,8 @@ const ProfileEditPage = () => {
                 name="username"
                 type="text"
                 className={css.input}
-                defaultValue={userName}
-                onChange={handleChange}
+                defaultValue={user?.username || ''}
+                required
               />
             </div>
 
@@ -63,7 +53,7 @@ const ProfileEditPage = () => {
               <button type="submit" className={css.saveButton}>
                 Save
               </button>
-              <button type="button" className={css.cancelButton}>
+              <button type="button" className={css.cancelButton} onClick={() => router.push('/profile')}>
                 Cancel
               </button>
             </div>
