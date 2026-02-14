@@ -5,7 +5,7 @@ const nextConfig: NextConfig = {
   reactCompiler: true,
   images: {
 	  remotePatterns: [
-	      { protocol: 'https', hostname: 'images.epochtimes.ru' }
+	      { protocol: 'https', hostname: 'ac.goit.global' }
 	    ]
 	}
 };

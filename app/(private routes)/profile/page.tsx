@@ -19,7 +19,7 @@ const Page = () => {
         </div>
         <div className={css.avatarWrapper}>
           <Image
-            src="https://images.epochtimes.ru/uploads/06/cinema/169_05_06_10_Alise_2.jpg"
+            src="https://ac.goit.global/fullstack/react/default-avatar.jpg"
             alt="User Avatar"
             width={120}
             height={120}
