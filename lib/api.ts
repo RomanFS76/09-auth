@@ -1,8 +1,9 @@
 import axios from 'axios';
-import type { Note } from '../../types/note';
+import type { Note } from '../types/note';
+import { User } from '@/types/user';
 
 const NotesAPI = axios.create({
-  baseURL: 'https://notehub-public.goit.study/api',
+  baseURL: 'https://notehub-api.goit.study/',
   headers: {
     accept: 'application/json',
     Authorization: `Bearer ${process.env.NEXT_PUBLIC_NOTEHUB_TOKEN}`,
@@ -41,5 +42,14 @@ export const fetchNoteById = async (id: string): Promise<Note> => {
   return data;
 };
 
+interface RegisterRequest {
+  email:string;
+  password:string;
+}
+
+export const register = async (data:RegisterRequest)=>{
+  const res = await NotesAPI.post<User>('/auth/register', data);
+  return res.data;
+};
 
 

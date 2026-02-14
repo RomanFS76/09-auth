@@ -1,10 +1,23 @@
+'use client'
+import {register} from '@/lib/api'
+
+
 import css from './SignUpPage.module.css';
 
 const page = () => {
+
+const handleSubmit =(formData:FormData)=>{
+  const userEmail = formData.get('email') as string;
+  const userPassword = formData.get('password') as string;
+
+  register({email:userEmail,password:userPassword})
+
+};
+
   return (
     <main className={css.mainContent}>
       <h1 className={css.formTitle}>Sign up</h1>
-      <form className={css.form}>
+      <form className={css.form} action={handleSubmit}>
         <div className={css.formGroup}>
           <label htmlFor="email">Email</label>
           <input
