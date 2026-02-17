@@ -1,9 +1,44 @@
+'use client';
+
 import css from './SignInPage.module.css';
 
-const page = () => {
+import { login } from '@/lib/api/clientApi';
+import { useRouter } from 'next/navigation';
+import { useAuthStore } from '@/lib/store/authStore';
+import { useState } from 'react';
+import { ApiError } from '@/app/api/api';
+
+const SignInPage = () => {
+  const [error, setError] = useState('');
+
+  const { setUser } = useAuthStore();
+  const router = useRouter();
+
+  const handleSubmit = async (formData: FormData): Promise<void> => {
+    const userEmail = formData.get('email') as string;
+    const userPassword = formData.get('password') as string;
+    const payload = { email: userEmail, password: userPassword };
+
+    try {
+      const res = await login(payload);
+      if (res) {
+        setUser(res);
+        router.push('/profile');
+      } else {
+        setError('Authentication failed. Please try again.');
+      }
+    } catch (error) {
+      setError(
+        (error as ApiError).response?.data?.error ??
+          (error as ApiError).message ??
+          'Oops... some error'
+      );
+    }
+  };
+
   return (
     <main className={css.mainContent}>
-      <form className={css.form}>
+      <form className={css.form} action={handleSubmit}>
         <h1 className={css.formTitle}>Sign in</h1>
 
         <div className={css.formGroup}>
@@ -33,11 +68,10 @@ const page = () => {
             Log in
           </button>
         </div>
-
-        <p className={css.error}>error</p>
+        {error && <p className={css.error}>{error}</p>}
       </form>
     </main>
   );
 };
 
-export default page;
+export default SignInPage;

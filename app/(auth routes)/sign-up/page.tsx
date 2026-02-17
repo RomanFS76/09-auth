@@ -1,7 +1,8 @@
 'use client';
 
 import css from './SignUpPage.module.css';
-import { register } from '@/lib/api';
+import { register } from '@/lib/api/clientApi';
+import {ApiError} from '@/app/api/api'
 import {useAuthStore} from '@/lib/store/authStore'
 
 import { useRouter } from 'next/navigation';
@@ -19,7 +20,6 @@ const SignUpPage = () => {
 
     try {
       const res = await register({ email: userEmail, password: userPassword });
-      console.log(res)
       if (res) {
         setUser(res);
         router.push('/profile');
@@ -27,7 +27,11 @@ const SignUpPage = () => {
         setError('Invalid email or password');
       }
     } catch (error) {
-      console.log(error);
+      setError(
+        (error as ApiError).response?.data?.error ??
+          (error as ApiError).message ??
+          'Oops... some error'
+      );
     }
   };
 
