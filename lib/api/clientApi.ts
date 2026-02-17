@@ -74,3 +74,13 @@ interface FetchNotesResponse {
   export const logout = async (): Promise<void> => {
     await nextServer.post('/auth/logout')
   };
+
+  export type UpdateUserRequest = {
+    username: string;
+    email : string;  
+  };
+  
+  export const updateMe = async (data: UpdateUserRequest) => {
+    const res = await nextServer.patch<User>('/users/me', data);
+    return res.data;
+  };
