@@ -14,11 +14,11 @@ const Header = () => {
       </Link>
       <nav aria-label="Main Navigation">
         <ul className={css.navigation}>
-          <li>
+          <li className={css.navigationItem}>
             <Link href="/">Home</Link>
           </li>
           {isAuthenticated && (
-            <li>
+            <li className={css.navigationItem}>
               <Link href={`/notes/filter/all`}>Notes</Link>
             </li>
           )}

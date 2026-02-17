@@ -19,6 +19,14 @@
     background-color: white;
     color: #333;
   }
+
+  .navigation {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    gap: 1rem;
+  }
   
   .navigationItem {
     display: flex;
@@ -34,3 +42,5 @@
   .navigationLink:hover {
     color: #ddd;
   }
+
+  

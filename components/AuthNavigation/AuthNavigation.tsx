@@ -26,7 +26,7 @@ const AuthNavigation = () => {
   };
 
   return (
-    <ul>
+    <ul className={css.navigation}>
       {isAuthenticated ? (
         <>
           <li className={css.navigationItem}>
