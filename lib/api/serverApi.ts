@@ -13,7 +13,7 @@ export const getMe = async (): Promise<User> => {
   return data;
 };
 
-export const checkSession = async (): Promise<boolean> => {
+export const checkSession = async () => {
   const cookieStore = await cookies();
   const res = await nextServer.get('/auth/session', {
     headers: {
@@ -21,7 +21,7 @@ export const checkSession = async (): Promise<boolean> => {
     },
   });
 
-  return res.data.success;
+  return res;
 };
 
 export const fetchNoteById = async (id: string): Promise<Note> => {
