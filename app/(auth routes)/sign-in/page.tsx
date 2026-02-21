@@ -6,7 +6,7 @@ import { login } from '@/lib/api/clientApi';
 import { useRouter } from 'next/navigation';
 import { useAuthStore } from '@/lib/store/authStore';
 import { useState } from 'react';
-import { ApiError } from '@/app/api/api';
+import { isAxiosError } from 'axios';
 
 const SignInPage = () => {
   const [error, setError] = useState('');
@@ -28,11 +28,17 @@ const SignInPage = () => {
         setError('Authentication failed. Please try again.');
       }
     } catch (error) {
-      setError(
-        (error as ApiError).response?.data?.error ??
-          (error as ApiError).message ??
-          'Oops... some error'
-      );
+      if (isAxiosError(error)) {
+        setError(
+          error.response?.data?.error ??
+          error.message ??
+          'Request failed'
+        );
+      } else if (error instanceof Error) {
+        setError(error.message);
+      } else {
+        setError('Unexpected error occurred');
+      }
     }
   };
 

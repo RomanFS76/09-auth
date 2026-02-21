@@ -5,7 +5,7 @@ import css from './EditProfilePage.module.css';
 import { updateMe } from '@/lib/api/clientApi';
 import { useAuthStore } from '@/lib/store/authStore';
 import { useRouter } from 'next/navigation';
-import { ApiError } from '@/app/api/api';
+import { isAxiosError } from 'axios';
 import { useState } from 'react';
 
 const EditProfilePage = () => {
@@ -15,20 +15,23 @@ const EditProfilePage = () => {
 
   const handleUpdate = async (formData: FormData): Promise<void> => {
     const username = formData.get('username') as string;
-    const email = user?.email;
 
     try {
-      const res = await updateMe({ email: email ?? '', username });
+      const res = await updateMe({ username });
       if (res) {
         setUser(res);
         router.push('/profile');
       }
     } catch (error) {
-      setError(
-        (error as ApiError).response?.data?.error ??
-          (error as ApiError).message ??
-          'Oops... some error'
-      );
+      if (isAxiosError(error)) {
+        setError(
+          error.response?.data?.error ?? error.message ?? 'Request failed'
+        );
+      } else if (error instanceof Error) {
+        setError(error.message);
+      } else {
+        setError('Unexpected error occurred');
+      }
     }
   };
 

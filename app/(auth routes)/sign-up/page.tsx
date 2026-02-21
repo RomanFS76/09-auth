@@ -2,8 +2,8 @@
 
 import css from './SignUpPage.module.css';
 import { register } from '@/lib/api/clientApi';
-import {ApiError} from '@/app/api/api'
-import {useAuthStore} from '@/lib/store/authStore'
+import { isAxiosError } from 'axios';
+import { useAuthStore } from '@/lib/store/authStore';
 
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
@@ -11,7 +11,7 @@ import { useState } from 'react';
 const SignUpPage = () => {
   const [error, setError] = useState('');
 
-  const {setUser} = useAuthStore();
+  const { setUser } = useAuthStore();
   const router = useRouter();
 
   const handleSubmit = async (formData: FormData): Promise<void> => {
@@ -27,11 +27,15 @@ const SignUpPage = () => {
         setError('Invalid email or password');
       }
     } catch (error) {
-      setError(
-        (error as ApiError).response?.data?.error ??
-          (error as ApiError).message ??
-          'Oops... some error'
-      );
+      if (isAxiosError(error)) {
+        setError(
+          error.response?.data?.error ?? error.message ?? 'Request failed'
+        );
+      } else if (error instanceof Error) {
+        setError(error.message);
+      } else {
+        setError('Unexpected error occurred');
+      }
     }
   };
 
